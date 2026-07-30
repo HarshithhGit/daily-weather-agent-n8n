@@ -1,0 +1,229 @@
+{
+  "name": "Daily weather",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 5
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        -96
+      ],
+      "id": "6149946c-995a-45d7-9453-9b8dde7a92f7",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "cityName": "Bengaluru"
+      },
+      "type": "n8n-nodes-base.openWeatherMap",
+      "typeVersion": 1,
+      "position": [
+        112,
+        -208
+      ],
+      "id": "3717425a-d3b9-4c9d-9d3c-e0c5b7a78982",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "LiQsQz5vET1u6EGn",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "iconsh72@gmail.com",
+        "subject": "Daily Weather",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width:600px; padding:20px; border:1px solid #ddd; border-radius:10px;\">\n\n<h2 style=\"color:#2E86C1;\">🌤️ Daily Weather Report</h2>\n\n<p><strong>📅 Date:</strong> {{ $json.Date }}</p>\n\n<p><strong>📍 Location:</strong> {{ $json.City }}</p>\n\n<hr>\n\n<table style=\"width:100%; border-collapse:collapse;\">\n\n<tr>\n<td>🌡️ <strong>Current Temperature</strong></td>\n<td>{{ $json.Temperarure }}°C</td>\n</tr>\n\n<tr>\n<td>📉 <strong>Minimum Temperature</strong></td>\n<td>{{ $json.Temperature_Min }}°C</td>\n</tr>\n\n<tr>\n<td>📈 <strong>Maximum Temperature</strong></td>\n<td>{{ $json.Temperature_Max }}°C</td>\n</tr>\n\n<tr>\n<td>🌬️ <strong>Wind Speed</strong></td>\n<td>{{ $json.wind_speed }} km/h</td>\n</tr>\n\n</table>\n\n<hr>\n\n<h3>💡 Today's Summary</h3>\n\n<p>\nThe weather in <strong>{{ $json.City }}</strong> is pleasant today with a current\ntemperature of <strong>{{ $json.Temperarure }}°C</strong>.\nTemperatures are expected to range between\n<strong>{{ $json.Temperature_Min }}°C</strong> and\n<strong>{{ $json.Temperature_Max }}°C</strong>.\nWinds are blowing at\n<strong>{{ $json.wind_speed }} km/h</strong>,\nmaking it a comfortable day for most outdoor activities.\n</p>\n\n<p>☀️ Have a wonderful day and stay safe!</p>\n\n<hr>\n\n<p style=\"font-size:12px;color:gray;\">\n🤖 Generated automatically using <strong>n8n</strong> •\n🌦️ OpenWeatherMap API •\n📧 Gmail\n</p>\n\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        -16
+      ],
+      "id": "0e725e78-91ec-49a7-a2c1-ae8db08a733a",
+      "name": "Send a message",
+      "webhookId": "3bb3b661-e0aa-4ad0-8b26-4addbf948511",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BhqBypUT3kyLZkug",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Ap60nbOMKtqSPWpMb97uGh-whfPADnoe3lfkvGD8VXg",
+          "mode": "list",
+          "cachedResultName": "Daily Weather Report",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ap60nbOMKtqSPWpMb97uGh-whfPADnoe3lfkvGD8VXg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ap60nbOMKtqSPWpMb97uGh-whfPADnoe3lfkvGD8VXg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "City": "={{ $json.name }}",
+            "Temperature_Min": "={{ $json.main.temp_min }}",
+            "Temperature_Max": "={{ $json.main.temp_max }}",
+            "wind_speed": "={{ $json.wind.speed }}",
+            "Temperarure": "={{ $json.main.temp }}",
+            "Date": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "City",
+              "displayName": "City",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Temperature_Min",
+              "displayName": "Temperature_Min",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Temperature_Max",
+              "displayName": "Temperature_Max",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "wind_speed",
+              "displayName": "wind_speed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Temperarure",
+              "displayName": "Temperarure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        64
+      ],
+      "id": "dd3c3266-3833-4047-85d5-97a8f0fec9e2",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CjshfstJIkGVGn1C",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenWeatherMap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d168d7f4-8019-4f7a-88b2-0093dd6e40fa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "42085359c58a99a64822b92978084d36fbd2eedd40eca1477661d6dfef732aba"
+  },
+  "nodeGroups": [],
+  "id": "SUkf4coW8ho9PWOw",
+  "tags": []
+}
